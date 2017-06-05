@@ -32,9 +32,36 @@ export const updateEvent = (eventDetails) => {
       body: JSON.stringify({ ...eventDetails })
     }).then( res => res.json() )
       .then( updatedEvent => {
-        console.log(updatedEvent);
         dispatch({ type: 'UPDATE_EVENT', updatedEvent})
       })
+  }
+}
+
+export const addAttendee = ( attendeeId, eventId ) => {
+  return(dispatch) => {
+    fetch(`/api/events/${eventId}`, {
+      method: 'PUT',
+      headers:{
+        'ACCEPT': 'application/json',
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ attendeeId, actionType: 'ATTEND'})
+    }).then( res => res.json() )
+      .then( updatedEvent => dispatch({ type: 'UPDATE_EVENT', updatedEvent }))
+  }
+}
+
+export const removeAttendee = (filteredAttendees, eventId) => {
+  return(dispatch) => {
+    fetch(`/api/events/${eventId}`, {
+      method: 'PUT',
+      headers:{
+        'ACCEPT': 'application/json',
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ filteredAttendees, actionType: 'UNATTEND'})
+    }).then( res=> res.json() )
+      .then( updatedEvent => dispatch({ type: 'UPDATE_EVENT', updatedEvent}))
   }
 }
 

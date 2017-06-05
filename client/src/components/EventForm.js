@@ -41,8 +41,8 @@ class EventForm extends Component {
   }
 
   render() {
-    let { _id, username, role } = this.props;
-    let { eventName, organizer, date, location, attendeeIds } = this.state;
+    let { username } = this.props;
+    let { eventName, date, location } = this.state;
     return(
       <div>
         <Header as="h2">{username}</Header>
