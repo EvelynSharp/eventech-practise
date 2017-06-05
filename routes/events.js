@@ -23,12 +23,26 @@ router.post('/', (req, res) => {
   });
 });
 
+router.put('/:id', (req, res) => {
+  let { eventName, organizer, date, location, attendeeIds } = req.body;
+  Event.findByIdAndUpdate(
+    req.params.id,
+    { $set: { eventName, organizer, date, location, attendeeIds }},
+    { new: true },
+    (err, updatedEvent) => {
+      if(err)
+        return res.json(err)
+      return res.json(updatedEvent)
+    }
+  )
+});
+
 router.delete('/:id', (req, res) => {
   Event.findByIdAndRemove(req.params.id, (err) => {
     if(err)
       return res.json(err)
     return res.sendStatus(204);
-  })
-})
+  });
+});
 
 module.exports = router;

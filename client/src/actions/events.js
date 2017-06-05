@@ -21,6 +21,23 @@ export const addEvent = (eventDetails) => {
   }
 }
 
+export const updateEvent = (eventDetails) => {
+  return(dispatch) => {
+    fetch(`/api/events/${eventDetails._id}`, {
+      method: 'PUT',
+      headers:{
+        'ACCEPT': 'application/json',
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ ...eventDetails })
+    }).then( res => res.json() )
+      .then( updatedEvent => {
+        console.log(updatedEvent);
+        dispatch({ type: 'UPDATE_EVENT', updatedEvent})
+      })
+  }
+}
+
 export const deleteEvent = (id) => {
   return(dispatch) => {
     fetch(`/api/events/${id}`, {

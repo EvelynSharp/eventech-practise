@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Header, Form, Button } from 'semantic-ui-react';
 import { connect } from 'react-redux';
-import { addEvent } from '../actions/events';
+import { addEvent, updateEvent } from '../actions/events';
 
 class EventForm extends Component {
   defaultData = { eventName: '', organizer: '', date: '', location: '', attendeeIds: [], updateEvent: false }
@@ -33,7 +33,10 @@ class EventForm extends Component {
           history.push('/');
         })
       } else {
-        
+        let eventDetails = { ...this.state };
+        this.props.dispatch(updateEvent(eventDetails));
+        this.setState({ ...this.defaultData });
+        this.props.toggleEdit();
       }
   }
 

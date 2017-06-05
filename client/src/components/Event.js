@@ -9,6 +9,10 @@ class Event extends Component {
   state={ edit: false }
 
   componentDidMount = () => {
+    this.refreshEvents();
+  }
+
+  refreshEvents = () => {
     this.props.dispatch(getEvents());
   }
 
@@ -26,6 +30,12 @@ class Event extends Component {
     let { eventName, organizer, date, location, attendeeIds, _id } = this.props.event;
     let { edit } = this.state;
     let eventToUpdate = this.props.event;
+    let isOrganizer;
+    if(organizer === this.props.user.username) {
+      isOrganizer = true;
+    } else {
+      isOrganizer = false;
+    }
     return(
       <div>
       { edit ?
@@ -42,12 +52,20 @@ class Event extends Component {
           <Header as="h6">{ organizer }</Header>
           <Header as="h4">{ date }</Header>
           <Header as="h4">{ location }</Header>
-          <Icon name='edit' size='large' onClick={ this.toggleEdit } />
-          <Icon
-            name='remove'
-            size='large'
-            onClick={ () => this.handleDelete(_id) }
-          />
+          { isOrganizer &&
+            <div>
+              <Icon
+                name='edit'
+                size='large'
+                onClick={ this.toggleEdit }
+              />
+              <Icon
+                name='remove'
+                size='large'
+                onClick={ () => this.handleDelete(_id) }
+              />
+            </div>
+          }
         </div>
       }
       </div>
@@ -57,7 +75,9 @@ class Event extends Component {
 }
 
 const mapStateToProps = (state, props) => {
-  return { event: state.events.find( n => n._id === props.match.params.id) || {} }
+  return { event: state.events.find( n => n._id === props.match.params.id) || {},
+           user: state.user
+          }
 }
 
 export default connect(mapStateToProps)(Event);
