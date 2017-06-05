@@ -4,9 +4,16 @@ import { connect } from 'react-redux';
 import { addEvent } from '../actions/events';
 
 class EventForm extends Component {
-  defaultData = { eventName: '', organizer: '', date: '', location: '', attendeeIds: [] }
+  defaultData = { eventName: '', organizer: '', date: '', location: '', attendeeIds: [], updateEvent: false }
 
   state={  ...this.defaultData  }
+
+  componentDidMount = () => {
+    if(this.props.updateEvent) {
+      let { eventToUpdate, updateEvent } = this.props;
+      this.setState({...eventToUpdate, updateEvent});
+    }
+  }
 
   handleEventChange = (e) => {
     let { id, value } = e.target;
@@ -15,15 +22,19 @@ class EventForm extends Component {
 
   submitNewEvent = (e) => {
     e.preventDefault();
-    let { _id, username } = this.props;
-    this.setState(
-      { organizer: username, attendeeIds: [ _id ]},
-      () => {
-        let eventDetails = { ...this.state };
-        this.props.dispatch(addEvent(eventDetails));
-        this.setState({ ...this.defaultData });
-      })
-
+    let { _id, username, history } = this.props;
+    if (!this.state.updateEvent) {
+      this.setState(
+        { organizer: username, attendeeIds: [ _id ]},
+        () => {
+          let eventDetails = { ...this.state };
+          this.props.dispatch(addEvent(eventDetails));
+          this.setState({ ...this.defaultData });
+          history.push('/');
+        })
+      } else {
+        
+      }
   }
 
   render() {

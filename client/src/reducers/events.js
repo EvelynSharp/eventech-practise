@@ -6,6 +6,8 @@ const events = (state=[], action) => {
       return []
     case 'ADD_EVENT':
       return [ action.newEvent, ...state ]
+    case 'DELETE_EVENT':
+      return state.filter( e => e._id !== action.id)
     default:
       return state;
   }

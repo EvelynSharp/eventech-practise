@@ -20,3 +20,11 @@ export const addEvent = (eventDetails) => {
       .then( newEvent => dispatch({ type: 'ADD_EVENT', newEvent }))
   }
 }
+
+export const deleteEvent = (id) => {
+  return(dispatch) => {
+    fetch(`/api/events/${id}`, {
+      method: 'DELETE'
+    }).then( () => dispatch({ type: 'DELETE_EVENT', id}))
+  }
+}
